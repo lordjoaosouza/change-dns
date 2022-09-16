@@ -1,0 +1,55 @@
+#!/bin/bash
+
+if [ $UID -ne 0 ]; then
+    echo "You must be root to run this script"
+    exit 1
+fi
+
+echo "Current DNS server:"
+grep nameserver /etc/resolv.conf | awk '{print $2}'
+echo
+
+echo "Choose a DNS server:"
+echo "1. Pi-hole;"
+echo "2. Cloudflare;"
+echo "3. Custom;"
+
+read -p "Enter a number: " choice
+
+case $choice in
+1)
+    chattr -i /etc/resolv.conf
+    pihole_server="your.server.ip" # change this to your Pi-hole server IP
+    echo "nameserver $pihole_server" >/etc/resolv.conf
+    chattr +i /etc/resolv.conf
+    ;;
+2)
+    chattr -i /etc/resolv.conf
+    echo "nameserver 1.1.1.1" >/etc/resolv.conf
+    chattr +i /etc/resolv.conf
+    ;;
+3)
+    chattr -i /etc/resolv.conf
+    echo
+    read -p "Enter a custom DNS server: " custom
+    echo "nameserver $custom" >/etc/resolv.conf
+    chattr +i /etc/resolv.conf
+    ;;
+*)
+    echo
+    echo "Invalid choice"
+    exit 1
+    ;;
+
+esac
+
+if [ $? -eq 0 ]; then
+    echo
+    echo "DNS server changed to:"
+    grep nameserver /etc/resolv.conf | awk '{print $2}'
+else
+    echo
+    echo "Failed to change DNS server"
+fi
+
+exit 0
