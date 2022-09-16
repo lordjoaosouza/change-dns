@@ -7,15 +7,16 @@ fi
 
 echo "Current DNS server:"
 grep nameserver /etc/resolv.conf | awk '{print $2}'
-echo
 
+# can add more DNS servers later if needed
+echo
 echo "Choose a DNS server:"
 echo "1. Pi-hole;"
 echo "2. Cloudflare;"
-echo "3. Custom;"
+echo "3. Google;"
+echo "4. Custom;"
 
 read -p "Enter a number: " choice
-
 case $choice in
 1)
     chattr -i /etc/resolv.conf
@@ -26,9 +27,16 @@ case $choice in
 2)
     chattr -i /etc/resolv.conf
     echo "nameserver 1.1.1.1" >/etc/resolv.conf
+    echo "nameserver 1.0.0.1" >>/etc/resolv.conf
     chattr +i /etc/resolv.conf
     ;;
 3)
+    chattr -i /etc/resolv.conf
+    echo "nameserver 8.8.8.8" >/etc/resolv.conf
+    echo "nameserver 8.8.4.4" >>/etc/resolv.conf
+    chattr +i /etc/resolv.conf
+    ;;
+4)
     chattr -i /etc/resolv.conf
     echo
     read -p "Enter a custom DNS server: " custom
