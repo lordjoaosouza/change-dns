@@ -13,4 +13,4 @@ This script will change your DNS server in `/etc/resolv.conf` to the one you spe
 
 ## Pi-hole support
 
-To add your Pi-hole to the list of DNS servers, edit in line 22 `(pihole_server)` to the IP address of your Pi-hole
+To add your Pi-hole to the list of DNS servers, edit in line 23 `(pihole_server)` to the IP address of your Pi-hole
